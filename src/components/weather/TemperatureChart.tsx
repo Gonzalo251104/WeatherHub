@@ -18,7 +18,6 @@ import {
 import { Card } from '../common';
 import { useTheme, useTemperatureUnit } from '../../context';
 import type { ForecastResponse } from '../../types';
-import { formatTemperature } from '../../utils';
 import { CHART_CONFIG } from '../../constants';
 
 interface TemperatureChartProps {
@@ -100,10 +99,10 @@ export const TemperatureChart: React.FC<TemperatureChartProps> = ({ forecast }) 
                 borderRadius: '0.5rem',
                 color: isDark ? '#f3f4f6' : '#1f2937',
               }}
-              formatter={(value: number, name: string) => [
+              formatter={((value: number, name: string) => [
                 `${value}${unitSymbol}`,
                 name === 'temperature' ? 'Temperature' : 'Feels Like',
-              ]}
+              ]) as never}
               labelStyle={{ color: textColor }}
             />
             <Legend
