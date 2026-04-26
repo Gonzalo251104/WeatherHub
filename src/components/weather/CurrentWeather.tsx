@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { Card, Button } from '../common';
-import { useFavorites } from '../../context';
+import { useFavorites, useTemperatureUnit } from '../../context';
 import type { CurrentWeatherResponse } from '../../types';
 import {
   formatTemperature,
@@ -22,6 +22,7 @@ interface CurrentWeatherProps {
 
 export const CurrentWeather: React.FC<CurrentWeatherProps> = ({ weather }) => {
   const { favorites, isFavorite, addFavorite, removeFavorite } = useFavorites();
+  const { unit } = useTemperatureUnit();
   const favorite = isFavorite(weather.coord.lat, weather.coord.lon);
 
   const handleToggleFavorite = () => {
@@ -93,10 +94,10 @@ export const CurrentWeather: React.FC<CurrentWeatherProps> = ({ weather }) => {
           />
           <div>
             <div className="text-6xl md:text-7xl font-bold text-gray-900 dark:text-white">
-              {formatTemperature(weather.main.temp)}
+              {formatTemperature(weather.main.temp, unit)}
             </div>
             <div className="text-xl text-gray-600 dark:text-gray-400 mt-2">
-              Feels like {formatTemperature(weather.main.feels_like)}
+              Feels like {formatTemperature(weather.main.feels_like, unit)}
             </div>
           </div>
         </div>
@@ -106,8 +107,8 @@ export const CurrentWeather: React.FC<CurrentWeatherProps> = ({ weather }) => {
             {capitalizeWeatherDescription(mainWeather.description)}
           </div>
           <div className="text-gray-600 dark:text-gray-400">
-            H: {formatTemperature(weather.main.temp_max)} • L:{' '}
-            {formatTemperature(weather.main.temp_min)}
+            H: {formatTemperature(weather.main.temp_max, unit)} • L:{' '}
+            {formatTemperature(weather.main.temp_min, unit)}
           </div>
         </div>
       </div>

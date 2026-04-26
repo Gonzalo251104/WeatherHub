@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { Card } from '../common';
+import { useTemperatureUnit } from '../../context';
 import type { ForecastResponse } from '../../types';
 import {
   formatTemperature,
@@ -17,6 +18,8 @@ interface WeatherForecastProps {
 }
 
 export const WeatherForecast: React.FC<WeatherForecastProps> = ({ forecast }) => {
+  const { unit } = useTemperatureUnit();
+
   // Group forecast by day (get one forecast per day at noon)
   const dailyForecasts = forecast.list.filter((item) => item.dt_txt.includes('12:00:00'));
 
@@ -48,10 +51,10 @@ export const WeatherForecast: React.FC<WeatherForecastProps> = ({ forecast }) =>
 
             <div className="flex items-center gap-2">
               <span className="text-xl font-bold text-gray-900 dark:text-white">
-                {formatTemperature(item.main.temp_max)}
+                {formatTemperature(item.main.temp_max, unit)}
               </span>
               <span className="text-gray-500 dark:text-gray-400">
-                {formatTemperature(item.main.temp_min)}
+                {formatTemperature(item.main.temp_min, unit)}
               </span>
             </div>
 
