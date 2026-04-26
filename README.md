@@ -1,268 +1,192 @@
 # WeatherHub 🌤️
 
-A modern, responsive weather application built with React, TypeScript, and Tailwind CSS. Get real-time weather information for any city worldwide with a beautiful, user-friendly interface.
+A minimalist, real-time weather application built with React, TypeScript, and Tailwind CSS. Search any city worldwide and get current conditions, 24-hour temperature trends, air quality data, and a 5-day forecast — all wrapped in a clean inverse light/dark theme system.
 
-![WeatherHub](https://img.shields.io/badge/React-19.2.0-61DAFB?style=flat&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=flat&logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.1-38B2AC?style=flat&logo=tailwind-css)
-![Vite](https://img.shields.io/badge/Vite-7.3.1-646CFF?style=flat&logo=vite)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-weatherhub--nine.vercel.app-000?style=for-the-badge&logo=vercel)](https://weatherhub-nine.vercel.app)
+
+![React](https://img.shields.io/badge/React-19.2-61DAFB?style=flat&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat&logo=tailwind-css)
+![Vite](https://img.shields.io/badge/Vite-7.3-646CFF?style=flat&logo=vite)
 
 ## ✨ Features
 
-- **Real-time Weather Data**: Current weather conditions and 5-day forecast
-- **City Search**: Search for weather information in any city worldwide
-- **Geolocation**: Automatically detect and display weather for your current location
-- **Favorite Cities**: Save and quickly access weather for multiple cities
-- **Dark/Light Mode**: Toggle between dark and light themes with system preference detection
-- **Responsive Design**: Mobile-first design that works on all devices
-- **Detailed Information**: Temperature, humidity, wind speed, pressure, visibility, and more
-- **Beautiful UI**: Glass morphism effects and smooth animations
-- **Type-Safe**: Full TypeScript support for better development experience
+| Feature | Description |
+|---------|-------------|
+| **Smart City Search** | Autocomplete with debounced geocoding — type a city name and get instant suggestions |
+| **Current Conditions** | Temperature, feels-like, humidity, wind, pressure, visibility, sunrise/sunset |
+| **24h Temperature Chart** | Interactive line chart showing temperature and feels-like trends (Recharts) |
+| **Air Quality Index** | Real-time AQI with pollutant breakdown (PM2.5, PM10, NO₂, O₃, CO) |
+| **5-Day Forecast** | Daily weather predictions with highs, lows, and conditions |
+| **°C / °F Toggle** | Switch temperature units globally with one click (persisted) |
+| **Favorite Cities** | Save up to 10 cities for quick access (localStorage) |
+| **Geolocation** | Auto-detect your location on first visit |
+| **Last City Memory** | Automatically loads the last searched city on page reload |
+| **Inverse Theme System** | Light/dark mode where accent colors mirror the opposite mode's background |
+| **Responsive Design** | Mobile-first layout that adapts to any screen size |
+
+## 🎨 Design Philosophy
+
+WeatherHub follows a **minimalist inverse theme** approach:
+
+- **Light mode**: White backgrounds, dark (`slate-900`) accent buttons and text
+- **Dark mode**: Near-black backgrounds, white (`slate-50`) accent buttons and text
+- No shadows, no gradients — just clean borders and solid colors
+- The accent color in each mode is the background color of the opposite mode
 
 ## 🚀 Tech Stack
 
-### Core Technologies
-- **React 19.2** - UI library
-- **TypeScript 5.9** - Type safety
-- **Vite 7.3** - Build tool and dev server
-- **Tailwind CSS 3.4** - Utility-first CSS framework
-
-### Key Dependencies
-- **Axios** - HTTP client for API requests
-- **React Leaflet** - Interactive maps (optional feature)
-- **Recharts** - Chart library for data visualization (optional feature)
-- **OpenWeatherMap API** - Weather data provider
-
-### Development Tools
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
-- **PostCSS** - CSS processing
+| Layer | Technology |
+|-------|-----------|
+| **UI** | React 19 |
+| **Language** | TypeScript 5.9 |
+| **Build Tool** | Vite 7.3 |
+| **Styling** | Tailwind CSS 3.4 |
+| **Charts** | Recharts |
+| **HTTP Client** | Axios |
+| **Data Source** | OpenWeatherMap API |
+| **Hosting** | Vercel |
 
 ## 📁 Project Structure
 
 ```
-weatherhub/
-├── public/                 # Static assets
-├── src/
-│   ├── api/               # API service layer
-│   │   ├── client.ts      # Axios instance configuration
-│   │   ├── weatherService.ts  # Weather API functions
-│   │   └── geolocationService.ts  # Geolocation utilities
-│   ├── components/        # React components
-│   │   ├── common/        # Reusable UI components
-│   │   │   ├── Button.tsx
-│   │   │   ├── Card.tsx
-│   │   │   ├── Input.tsx
-│   │   │   ├── LoadingSpinner.tsx
-│   │   │   ├── ErrorMessage.tsx
-│   │   │   └── Skeleton.tsx
-│   │   ├── layout/        # Layout components
-│   │   │   ├── Header.tsx
-│   │   │   └── Footer.tsx
-│   │   └── weather/       # Weather-specific components
-│   │       ├── SearchBar.tsx
-│   │       ├── CurrentWeather.tsx
-│   │       ├── WeatherForecast.tsx
-│   │       └── FavoriteCities.tsx
-│   ├── context/           # React context providers
-│   │   ├── ThemeContext.tsx     # Dark/Light mode
-│   │   └── FavoritesContext.tsx # Favorite cities
-│   ├── hooks/             # Custom React hooks
-│   │   ├── useWeather.ts
-│   │   ├── useForecast.ts
-│   │   └── useGeolocation.ts
-│   ├── pages/             # Page components
-│   │   └── HomePage.tsx
-│   ├── types/             # TypeScript type definitions
-│   │   ├── weather.types.ts
-│   │   └── app.types.ts
-│   ├── utils/             # Utility functions
-│   │   ├── temperature.ts
-│   │   ├── date.ts
-│   │   ├── weather.ts
-│   │   └── storage.ts
-│   ├── constants/         # App constants and configuration
-│   │   └── index.ts
-│   ├── App.tsx            # Root component
-│   ├── main.tsx           # Application entry point
-│   └── index.css          # Global styles
-├── .env.example           # Environment variables template
-├── .gitignore
-├── package.json
-├── tailwind.config.js
-├── tsconfig.json
-└── vite.config.ts
+src/
+├── api/                    # API service layer
+│   ├── client.ts           # Axios instance with interceptors
+│   ├── weatherService.ts   # Weather, forecast & geocoding API calls
+│   └── geolocationService.ts
+├── components/
+│   ├── common/             # Reusable UI primitives
+│   │   ├── Button.tsx      # Variant-based button (primary/secondary/outline/ghost)
+│   │   ├── Card.tsx
+│   │   ├── Input.tsx
+│   │   ├── LoadingSpinner.tsx
+│   │   ├── ErrorMessage.tsx
+│   │   └── Skeleton.tsx
+│   ├── layout/
+│   │   ├── Header.tsx      # App title, unit toggle, theme toggle
+│   │   └── Footer.tsx
+│   └── weather/
+│       ├── SearchBar.tsx       # Autocomplete with keyboard navigation
+│       ├── CurrentWeather.tsx  # Main weather display card
+│       ├── TemperatureChart.tsx # 24h trend line chart
+│       ├── AirQualityCard.tsx  # AQI with pollutant bars
+│       ├── WeatherForecast.tsx # 5-day daily forecast
+│       └── FavoriteCities.tsx  # Saved cities grid
+├── context/
+│   ├── ThemeContext.tsx          # Light/dark mode with system detection
+│   ├── TemperatureUnitContext.tsx # °C/°F global state with persistence
+│   └── FavoritesContext.tsx      # Favorite cities with localStorage
+├── hooks/
+│   ├── useWeather.ts       # Current weather data fetching
+│   ├── useForecast.ts      # 5-day forecast fetching
+│   ├── useAirQuality.ts    # Air pollution data fetching
+│   ├── useGeolocation.ts   # Browser geolocation API
+│   └── useDebounce.ts      # Debounce utility for search input
+├── types/                  # TypeScript interfaces
+├── utils/                  # Helper functions (temperature, date, storage)
+├── pages/
+│   └── HomePage.tsx        # Main page composing all weather components
+├── App.tsx                 # Root component with context providers
+├── main.tsx                # Entry point
+└── index.css               # Design system (tokens, components)
 ```
 
-## 🛠️ Installation
+## 🛠️ Getting Started
 
 ### Prerequisites
-- Node.js 18.x or higher
-- npm or yarn package manager
-- OpenWeatherMap API key (free tier available)
 
-### Steps
+- **Node.js** 18+ and **npm**
+- **OpenWeatherMap API key** — [Get one free](https://openweathermap.org/api)
 
-1. **Clone the repository**
+### Installation
+
 ```bash
-git clone <repository-url>
-cd weatherhub
-```
+# Clone the repository
+git clone https://github.com/Gonzalo251104/WeatherHub.git
+cd WeatherHub
 
-2. **Install dependencies**
-```bash
+# Install dependencies
 npm install
-```
 
-3. **Set up environment variables**
-
-Create a `.env` file in the root directory:
-```bash
+# Set up environment variables
 cp .env.example .env
+# Edit .env and add your API key
 ```
 
-4. **Get your OpenWeatherMap API key**
-   - Visit [OpenWeatherMap](https://openweathermap.org/api)
-   - Sign up for a free account
-   - Generate an API key
-   - Add it to your `.env` file:
+### Environment Variables
 
-```env
-VITE_OPENWEATHER_API_KEY=your_api_key_here
-VITE_OPENWEATHER_BASE_URL=https://api.openweathermap.org/data/2.5
-```
+| Variable | Description | Required |
+|----------|-------------|:--------:|
+| `VITE_OPENWEATHER_API_KEY` | Your OpenWeatherMap API key | ✅ |
+| `VITE_OPENWEATHER_BASE_URL` | API base URL (`https://api.openweathermap.org/data/2.5`) | ✅ |
 
-5. **Start the development server**
-```bash
-npm run dev
-```
-
-The app will be available at `http://localhost:5173`
-
-## 📜 Available Scripts
+### Running Locally
 
 ```bash
-# Start development server
+# Development server (hot reload)
 npm run dev
 
-# Build for production
+# Production build
 npm run build
 
 # Preview production build
 npm run preview
 
-# Run linter
+# Type checking
+npx tsc --noEmit
+
+# Lint
 npm run lint
-
-# Fix linting issues
-npm run lint:fix
-
-# Format code with Prettier
-npm run format
 ```
-
-## 🔑 Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `VITE_OPENWEATHER_API_KEY` | Your OpenWeatherMap API key | Yes |
-| `VITE_OPENWEATHER_BASE_URL` | API base URL | No (has default) |
-
-## 🎨 Features Deep Dive
-
-### Current Weather
-- Real-time temperature with "feels like" temperature
-- Weather condition description with icon
-- Humidity, wind speed, pressure, and visibility
-- Sunrise and sunset times
-- High/low temperature for the day
-
-### 5-Day Forecast
-- Daily weather predictions
-- Temperature ranges
-- Weather conditions
-- Precipitation probability
-- Humidity levels
-
-### Search & Location
-- Search any city by name
-- Auto-detect user location with browser geolocation API
-- Error handling for invalid cities or denied location access
-
-### Favorite Cities
-- Save up to 10 favorite cities
-- Quick access to saved locations
-- Persistent storage using localStorage
-- Easy add/remove functionality
-
-### Theme System
-- Light and dark mode toggle
-- System preference detection
-- Smooth theme transitions
-- Persistent theme preference
 
 ## 🏗️ Architecture
 
 ### State Management
-- **React Context** for global state (theme, favorites)
-- **Custom Hooks** for data fetching and business logic
-- **Component-level state** for UI interactions
+- **React Context** for global concerns (theme, favorites, temperature units)
+- **Custom Hooks** to encapsulate data fetching and decouple logic from UI
+- **localStorage** for persistence (theme, unit preference, last city, favorites)
 
 ### API Layer
-- Centralized Axios client with interceptors
-- Type-safe API functions
-- Error handling and retry logic
-- Request/response transformations
+- Centralized Axios client with base URL and error interceptors
+- Separate service functions for Weather, Forecast, Air Quality, and Geocoding APIs
+- Full TypeScript coverage on all API responses
 
-### Styling
-- **Tailwind CSS** for utility-first styling
-- **CSS custom properties** for theming
-- **Glass morphism** effects
-- **Responsive design** with mobile-first approach
+### Design System
+- Utility classes defined in `index.css` (`@layer components`)
+- Variant-based Button component with 4 styles × 3 sizes
+- Consistent color tokens: `slate-50` ↔ `slate-950` inverse system
+- All transitions use `duration-300` for smooth mode switches
 
-### Type Safety
-- Comprehensive TypeScript types
-- API response interfaces
-- Component prop types
-- Utility function signatures
+## 🚢 Deployment
 
-## 🧪 Best Practices Implemented
+This project is deployed on **Vercel** with automatic deployments on push to `master`.
 
-- ✅ Component composition and reusability
-- ✅ Custom hooks for shared logic
-- ✅ TypeScript for type safety
-- ✅ Error boundaries and error handling
-- ✅ Loading states and skeletons
-- ✅ Accessible UI (ARIA labels, keyboard navigation)
-- ✅ Clean code principles (SOLID, DRY)
-- ✅ Code splitting and lazy loading ready
-- ✅ Environment variable management
-- ✅ Responsive images and performance optimization
+To deploy your own instance:
+
+1. Fork this repository
+2. Connect it to [Vercel](https://vercel.com)
+3. Add environment variables in the Vercel dashboard:
+   - `VITE_OPENWEATHER_API_KEY`
+   - `VITE_OPENWEATHER_BASE_URL`
+4. Deploy — Vercel auto-detects Vite and configures the build
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License.
 
 ## 🙏 Acknowledgments
 
-- Weather data provided by [OpenWeatherMap](https://openweathermap.org/)
-- Icons from [Heroicons](https://heroicons.com/)
+- Weather data by [OpenWeatherMap](https://openweathermap.org/)
+- Charts by [Recharts](https://recharts.org/)
 - Built with [Vite](https://vitejs.dev/), [React](https://react.dev/), and [Tailwind CSS](https://tailwindcss.com/)
-
-## 📧 Contact
-
-For questions or feedback, please open an issue on GitHub.
-
----
-
-**Note**: This is a portfolio project demonstrating modern React development practices, TypeScript usage, and API integration. It showcases clean code architecture, responsive design, and professional-grade user experience.
