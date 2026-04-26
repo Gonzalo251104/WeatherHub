@@ -8,8 +8,8 @@ export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="glass-effect mt-auto px-4 py-6 md:px-8">
-      <div className="max-w-7xl mx-auto text-center text-sm text-gray-600 dark:text-gray-400">
+    <footer className="mt-auto px-4 py-6 md:px-8 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto text-center text-sm text-slate-500 dark:text-slate-400">
         <p className="mb-2">
           Built with React, TypeScript, and Tailwind CSS
         </p>
@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
             href="https://openweathermap.org/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium transition-colors"
+            className="text-slate-900 dark:text-slate-50 hover:underline font-medium transition-colors"
           >
             OpenWeatherMap
           </a>
