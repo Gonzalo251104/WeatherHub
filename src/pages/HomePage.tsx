@@ -4,7 +4,7 @@
 
 import React, { useEffect } from 'react';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
-import { SearchBar, CurrentWeather, WeatherForecast, FavoriteCities } from '../components/weather';
+import { SearchBar, CurrentWeather, WeatherForecast, FavoriteCities, TemperatureChart } from '../components/weather';
 import { useWeather, useForecast, useGeolocation } from '../hooks';
 import { CONFIG } from '../constants';
 
@@ -103,6 +103,9 @@ export const HomePage: React.FC = () => {
           <div className="space-y-8">
             {/* Current Weather */}
             <CurrentWeather weather={weather} />
+
+            {/* 24-Hour Temperature Trend */}
+            {forecast && <TemperatureChart forecast={forecast} />}
 
             {/* 5-Day Forecast */}
             {forecast && <WeatherForecast forecast={forecast} />}
