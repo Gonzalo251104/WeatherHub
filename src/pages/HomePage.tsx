@@ -1,12 +1,14 @@
 /**
- * Home page - Main application page
+ * Home page - Main application page.
+ * Remembers the last searched city across sessions via localStorage.
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
 import { SearchBar, CurrentWeather, WeatherForecast, FavoriteCities, TemperatureChart, AirQualityCard } from '../components/weather';
 import { useWeather, useForecast, useGeolocation, useAirQuality } from '../hooks';
-import { CONFIG } from '../constants';
+import { CONFIG, STORAGE_KEYS } from '../constants';
+import { getStorageItem, setStorageItem } from '../utils';
 
 export const HomePage: React.FC = () => {
   const {
@@ -29,10 +31,11 @@ export const HomePage: React.FC = () => {
   const { getCurrentLocation } = useGeolocation();
   const { airQuality, fetchAirQuality } = useAirQuality();
 
-  // Load default city on mount
+  // Load last searched city (or default) on mount
   useEffect(() => {
-    fetchWeatherByCity(CONFIG.DEFAULT_CITY);
-    fetchForecastByCity(CONFIG.DEFAULT_CITY);
+    const lastCity = getStorageItem<string>(STORAGE_KEYS.LAST_SEARCHED, CONFIG.DEFAULT_CITY);
+    fetchWeatherByCity(lastCity);
+    fetchForecastByCity(lastCity);
   }, [fetchWeatherByCity, fetchForecastByCity]);
 
   // Fetch air quality when weather data becomes available
@@ -41,6 +44,21 @@ export const HomePage: React.FC = () => {
       fetchAirQuality(weather.coord.lat, weather.coord.lon);
     }
   }, [weather, fetchAirQuality]);
+
+  /**
+   * Save the city name to localStorage after a successful search.
+   * Called by weather data update — only persists the name from the response.
+   */
+  const saveLastSearched = useCallback((cityName: string) => {
+    setStorageItem(STORAGE_KEYS.LAST_SEARCHED, cityName);
+  }, []);
+
+  // Persist last searched city when weather data updates
+  useEffect(() => {
+    if (weather?.name) {
+      saveLastSearched(weather.name);
+    }
+  }, [weather, saveLastSearched]);
 
   const handleSearch = async (city: string) => {
     await Promise.all([fetchWeatherByCity(city), fetchForecastByCity(city)]);
