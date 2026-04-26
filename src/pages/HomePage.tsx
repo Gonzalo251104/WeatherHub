@@ -4,8 +4,8 @@
 
 import React, { useEffect } from 'react';
 import { LoadingSpinner, ErrorMessage } from '../components/common';
-import { SearchBar, CurrentWeather, WeatherForecast, FavoriteCities, TemperatureChart } from '../components/weather';
-import { useWeather, useForecast, useGeolocation } from '../hooks';
+import { SearchBar, CurrentWeather, WeatherForecast, FavoriteCities, TemperatureChart, AirQualityCard } from '../components/weather';
+import { useWeather, useForecast, useGeolocation, useAirQuality } from '../hooks';
 import { CONFIG } from '../constants';
 
 export const HomePage: React.FC = () => {
@@ -27,12 +27,20 @@ export const HomePage: React.FC = () => {
   } = useForecast();
 
   const { getCurrentLocation } = useGeolocation();
+  const { airQuality, fetchAirQuality } = useAirQuality();
 
   // Load default city on mount
   useEffect(() => {
     fetchWeatherByCity(CONFIG.DEFAULT_CITY);
     fetchForecastByCity(CONFIG.DEFAULT_CITY);
   }, [fetchWeatherByCity, fetchForecastByCity]);
+
+  // Fetch air quality when weather data becomes available
+  useEffect(() => {
+    if (weather) {
+      fetchAirQuality(weather.coord.lat, weather.coord.lon);
+    }
+  }, [weather, fetchAirQuality]);
 
   const handleSearch = async (city: string) => {
     await Promise.all([fetchWeatherByCity(city), fetchForecastByCity(city)]);
@@ -106,6 +114,9 @@ export const HomePage: React.FC = () => {
 
             {/* 24-Hour Temperature Trend */}
             {forecast && <TemperatureChart forecast={forecast} />}
+
+            {/* Air Quality Index */}
+            {airQuality && <AirQualityCard airQuality={airQuality} />}
 
             {/* 5-Day Forecast */}
             {forecast && <WeatherForecast forecast={forecast} />}
