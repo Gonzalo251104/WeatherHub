@@ -38,6 +38,10 @@ export const HomePage: React.FC = () => {
     await Promise.all([fetchWeatherByCity(city), fetchForecastByCity(city)]);
   };
 
+  const handleSearchByCoords = async (lat: number, lon: number) => {
+    await Promise.all([fetchWeatherByCoords(lat, lon), fetchForecastByCoords(lat, lon)]);
+  };
+
   const handleUseLocation = async () => {
     const position = await getCurrentLocation();
     if (position) {
@@ -62,6 +66,7 @@ export const HomePage: React.FC = () => {
         <div className="mb-8">
           <SearchBar
             onSearch={handleSearch}
+            onSearchByCoords={handleSearchByCoords}
             onUseLocation={handleUseLocation}
             isLoading={isLoading}
           />
